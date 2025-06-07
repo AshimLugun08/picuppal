@@ -40,8 +40,8 @@ async function getFares(pickup, destination) {
     return fare;
 }
 
-const _getFare = getFares;
-export { _getFare as getFare };
+// const _getFare = getFares;
+export {  getFares };
 
 export async function createRides({ user, pickup, destination, vehicleType }) {
     if (!user || !pickup || !destination || !vehicleType) {
