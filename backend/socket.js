@@ -1,4 +1,5 @@
-import socketIo from 'socket.io';
+import { Server as socketIo } from 'socket.io';
+
 import userModal from './model/user.model.js'; // Assuming you have a user model
 import captainModel from './model/caption.model.js';
 
