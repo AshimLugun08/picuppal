@@ -1,4 +1,5 @@
-import { create, findOneAndUpdate, findOne } from '../model/ride.modal.js';
+import Ride from '../model/ride.modal.js';
+
 import { getDistanceTime } from './maps.service.js';
 // const bycrypt = require('bcryptjs');
 import { randomBytes } from 'crypto';
@@ -56,7 +57,7 @@ export async function createRides({ user, pickup, destination, vehicleType }) {
 
     const fare = await getFares(pickup, destination);
 
-    const ride = await create({
+    const ride = await  Ride.create({
         user,
         pickup,
         destination,
@@ -76,14 +77,14 @@ export async function confirmRides({
         throw new Error('Ride id is required');
     }
 
-    await findOneAndUpdate({
+    await  Ride.findOneAndUpdate({
         _id: rideId
     }, {
         status: 'accepted',
         captain: captain._id
     })
 
-    const ride = await findOne({
+    const ride = await  Ride.findOne({
         _id: rideId
     }).populate('user').populate('captain').select('+otp');
 
@@ -100,7 +101,7 @@ export async function startRides({ rideId, otp, captain }) {
         throw new Error('Ride id and OTP are required');
     }
 
-    const ride = await findOne({
+    const ride = await  Ride.findOne({
         _id: rideId
     }).populate('user').populate('captain').select('+otp');
 
@@ -116,7 +117,7 @@ export async function startRides({ rideId, otp, captain }) {
         throw new Error('Invalid OTP');
     }
 
-    await findOneAndUpdate({
+    await  Ride.findOneAndUpdate({
         _id: rideId
     }, {
         status: 'ongoing'
@@ -130,7 +131,7 @@ export async function endRides({ rideId, captain }) {
         throw new Error('Ride id is required');
     }
 
-    const ride = await findOne({
+    const ride = await  Ride.findOne({
         _id: rideId,
         captain: captain._id
     }).populate('user').populate('captain').select('+otp');
@@ -143,7 +144,7 @@ export async function endRides({ rideId, captain }) {
         throw new Error('Ride not ongoing');
     }
 
-    await findOneAndUpdate({
+    await  Ride.findOneAndUpdate({
         _id: rideId
     }, {
         status: 'completed'
