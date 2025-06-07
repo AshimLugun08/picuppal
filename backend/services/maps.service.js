@@ -1,11 +1,11 @@
-import { get } from 'axios';
+import axios from 'axios';
 import captainModel from '../model/caption.model.js';
 
 export async function getAddressCoordinate(address){
     const apikey = process.env.GOOGLE_MAPS_API;
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apikey}`;
     try {
-        const response = await get(url);
+        const response = await axios.get(url);
         if (response.data.status === 'OK') {
             const location = response.data.results[0].geometry.location;
             return {
