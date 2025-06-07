@@ -1,4 +1,4 @@
-import { create } from '../model/user.model.js';
+import userModel from '../model/user.model.js';
 
 
 export async function createUser({
@@ -8,7 +8,7 @@ export async function createUser({
         throw new Error('All fields are required');
     }
   
-    const user = create({
+    const user = userModel.create({
         fullname: {
             firstname,
             lastname

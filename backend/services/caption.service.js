@@ -1,12 +1,12 @@
 // const captainModel = require('../model/caption.model');
-import { create } from '../model/caption.model.js';
+import captainModel from '../model/caption.model.js';
 
 export async function createCaption({ firstname, lastname, email, password, color, plate, capacity, vehicleType }) {
     if (!firstname || !lastname || !email || !password || !color || !plate || !capacity || !vehicleType) {
         throw new Error('All fields are required');
     }
 
-    const caption = await create({
+    const caption = await captainModel.create({
         fullname: {
             firstname,
             lastname
