@@ -3,7 +3,7 @@ import { getDistanceTime } from './maps.service.js';
 // const bycrypt = require('bcryptjs');
 import { randomBytes } from 'crypto';
 
-async function getFare(pickup ,destination){
+async function getFares(pickup ,destination){
     if (!pickup || !destination) {
         throw new Error('Pickup and destination are required to calculate fare');
     }
@@ -38,7 +38,7 @@ async function getFare(pickup ,destination){
 
 }
 
-const _getFare = getFare;
+const _getFare = getFares;
 export { _getFare as getFare };
 
 function getOtp(num){
@@ -49,12 +49,12 @@ function generateOtp(num){
 return generateOtp(num);
 }
 
-export async function createRide({ user, pickup, destination, vehicleType }) {
+export async function createRides({ user, pickup, destination, vehicleType }) {
     if (!user || !pickup || !destination || !vehicleType) {
         throw new Error('all fields are required');
     }
 
-    const fare = await getFare(pickup, destination);
+    const fare = await getFares(pickup, destination);
 
     const ride = await create({
         user,
@@ -69,7 +69,7 @@ export async function createRide({ user, pickup, destination, vehicleType }) {
 }
 
 
-export async function confirmRide({
+export async function confirmRides({
     rideId, captain
 }) {
     if (!rideId) {
@@ -95,7 +95,7 @@ export async function confirmRide({
 
 }
 
-export async function startRide({ rideId, otp, captain }) {
+export async function startRides({ rideId, otp, captain }) {
     if (!rideId || !otp) {
         throw new Error('Ride id and OTP are required');
     }
@@ -125,7 +125,7 @@ export async function startRide({ rideId, otp, captain }) {
     return ride;
 }
 
-export async function endRide({ rideId, captain }) {
+export async function endRides({ rideId, captain }) {
     if (!rideId) {
         throw new Error('Ride id is required');
     }

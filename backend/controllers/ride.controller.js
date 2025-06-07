@@ -1,4 +1,4 @@
-import { createRide, getFare, confirmRide, startRide, endRide } from '../services/ride.service.js';
+import { createRides, getFares, confirmRides, startRides, endRides } from '../services/ride.service.js';
 import { validationResult } from 'express-validator';
 import { getAddressCoordinate, getCaptiansInTheRadius } from '../services/maps.service.js';
 import { sendMessageToSocketId } from '../socket.js';
@@ -13,7 +13,7 @@ export async function createRide(req, res) {
     const { userId, pickup, destination, vehicleType } = req.body;
     try {
         // Create the ride
-        const ride = await createRide({
+        const ride = await createRides({
            user: req.user._id,
             pickup,
             destination,
@@ -65,7 +65,7 @@ export async function getFare(req, res) {
     const { pickup, destination } = req.query;
 
     try {
-        const fare = await getFare(pickup, destination);
+        const fare = await getFares(pickup, destination);
         return res.status(200).json(fare);
     } catch (err) {
         return res.status(500).json({ message: err.message });
@@ -82,7 +82,7 @@ export async function confirmRide(req, res) {
     const { rideId } = req.body;
 
     try {
-        const ride = await confirmRide({ rideId, captain: req.captain });
+        const ride = await confirmRides({ rideId, captain: req.captain });
 
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-confirmed',
@@ -106,7 +106,7 @@ export async function startRide(req, res) {
     const { rideId, otp } = req.query;
 
     try {
-        const ride = await startRide({ rideId, otp, captain: req.captain });
+        const ride = await startRides({ rideId, otp, captain: req.captain });
 
         console.log(ride);
 
@@ -130,7 +130,7 @@ export async function endRide(req, res) {
     const { rideId } = req.body;
 
     try {
-        const ride = await endRide({ rideId, captain: req.captain });
+        const ride = await endRides({ rideId, captain: req.captain });
 
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-ended',
