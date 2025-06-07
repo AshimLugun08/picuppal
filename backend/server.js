@@ -7,6 +7,6 @@ const server = createServer(app);
 
 initializeSocket(server);
 
-server.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
-});
+export default function handler(req, res) {
+  res.status(200).json({ message: 'Hello from Vercel!' });
+}
