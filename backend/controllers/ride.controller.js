@@ -2,7 +2,7 @@ import { createRides, getFares, confirmRides, startRides, endRides } from '../se
 import { validationResult } from 'express-validator';
 import { getAddressCoordinate, getCaptiansInTheRadius } from '../services/maps.service.js';
 import { sendMessageToSocketId } from '../socket.js';
-import { findOne } from '../model/ride.modal.js';
+import Ride from '../model/ride.modal.js';
 
 export async function createRide(req, res) {
     const errors = validationResult(req);
@@ -37,7 +37,7 @@ export async function createRide(req, res) {
 
         ride.otp=""
         console.log('Captains in Radius:', captianInRadius);
-      const rideWithUser = await findOne({ _id: ride._id }).populate('user');
+      const rideWithUser = await Ride.findOne({ _id: ride._id }).populate('user');
 
 
       (captianInRadius.map( captain=>{
