@@ -44,7 +44,7 @@ export async function getDistanceTimes(origin, destination) {
         throw error;
     }}
 
-    export async function     getAutoCompleteSuggestions(input) {
+    export async function     getAutoCompleteSuggestionss(input) {
         if (!input) {
             throw new Error('query is required');
         }

@@ -1,4 +1,4 @@
-import { getAddressCoordinate, getDistanceTimes, getAutoCompleteSuggestions } from '../services/maps.service.js';
+import { getAddressCoordinate, getDistanceTimes, getAutoCompleteSuggestionss } from '../services/maps.service.js';
 import { validationResult } from 'express-validator';
 
 
@@ -56,7 +56,7 @@ export async function getAutoCompleteSuggestions(req, res) {
     }
 
     try {
-        const suggestions = await getAutoCompleteSuggestions(input);
+        const suggestions = await getAutoCompleteSuggestionss(input);
         res.status(200).json(suggestions);
     } catch (error) {
         console.error('Error fetching suggestions:', error);
