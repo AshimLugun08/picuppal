@@ -63,4 +63,4 @@ console.log(messageObject);
     }
 }
 
-export default { initializeSocket, sendMessageToSocketId };
+export  { initializeSocket, sendMessageToSocketId };
