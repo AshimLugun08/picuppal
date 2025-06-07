@@ -1,4 +1,4 @@
-import { getAddressCoordinate, getDistanceTime, getAutoCompleteSuggestions } from '../services/maps.service.js';
+import { getAddressCoordinate, getDistanceTimes, getAutoCompleteSuggestions } from '../services/maps.service.js';
 import { validationResult } from 'express-validator';
 
 
@@ -36,7 +36,7 @@ export async function getDistanceTime(req, res ,next) {
             return res.status(400).json({ message: 'Origin and destination are required' });
         }
 
-        const distanceTime = await getDistanceTime(origin, destination);
+        const distanceTime = await getDistanceTimes(origin, destination);
         res.status(200).json(distanceTime);
     } catch (error) {
         console.error('Error fetching distance and time:', error);

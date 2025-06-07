@@ -23,7 +23,7 @@ export async function getAddressCoordinate(address){
 
 }
 
-export async function getDistanceTime(origin, destination) {
+export async function getDistanceTimes(origin, destination) {
     if (!origin || !destination) {
         throw new Error('Origin and destination are required');
     }
