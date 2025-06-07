@@ -1,4 +1,4 @@
-import { create } from '../model/user.model';
+import { create } from '../model/user.model.js';
 
 
 export async function createUser({

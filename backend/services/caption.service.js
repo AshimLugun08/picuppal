@@ -1,5 +1,5 @@
 // const captainModel = require('../model/caption.model');
-import { create } from '../model/caption.model';
+import { create } from '../model/caption.model.js';
 
 export async function createCaption({ firstname, lastname, email, password, color, plate, capacity, vehicleType }) {
     if (!firstname || !lastname || !email || !password || !color || !plate || !capacity || !vehicleType) {

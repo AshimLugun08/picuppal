@@ -1,8 +1,8 @@
 import { Router } from 'express';
 const router = Router();
 import { body } from 'express-validator';
-import { registerUser, loginUser, getUserProfile, logoutUser } from '../controllers/user.controllers';
-import { authUser } from '../middlewares/auth.middleware';
+import { registerUser, loginUser, getUserProfile, logoutUser } from '../controllers/user.controllers.js';
+import { authUser } from '../middlewares/auth.middleware.js';
 
 
 router.post(

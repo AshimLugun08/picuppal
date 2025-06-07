@@ -1,5 +1,5 @@
-import { create, findOneAndUpdate, findOne } from '../model/ride.modal';
-import { getDistanceTime } from './maps.service';
+import { create, findOneAndUpdate, findOne } from '../model/ride.modal.js';
+import { getDistanceTime } from './maps.service.js';
 // const bycrypt = require('bcryptjs');
 import { randomBytes } from 'crypto';
 

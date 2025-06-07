@@ -1,6 +1,6 @@
-import captainModel from '../model/caption.model';
-import { createCaption } from '../services/caption.service';
-import blackListTokenModel from '../model/blacklistToken.model';
+import captainModel from '../model/caption.model.js';
+import { createCaption } from '../services/caption.service.js';
+import blackListTokenModel from '../model/blacklistToken.model.js';
 import { validationResult } from 'express-validator';
 // const captain = require('../model/caption.model');  
 

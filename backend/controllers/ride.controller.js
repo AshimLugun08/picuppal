@@ -1,8 +1,8 @@
-import { createRide, getFare, confirmRide, startRide, endRide } from '../services/ride.service';
+import { createRide, getFare, confirmRide, startRide, endRide } from '../services/ride.service.js';
 import { validationResult } from 'express-validator';
-import { getAddressCoordinate, getCaptiansInTheRadius } from '../services/maps.service';
-import { sendMessageToSocketId } from '../socket';
-import { findOne } from '../model/ride.modal';
+import { getAddressCoordinate, getCaptiansInTheRadius } from '../services/maps.service.js';
+import { sendMessageToSocketId } from '../socket.js';
+import { findOne } from '../model/ride.modal.js';
 
 export async function createRide(req, res) {
     const errors = validationResult(req);

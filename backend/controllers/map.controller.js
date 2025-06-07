@@ -1,4 +1,4 @@
-import { getAddressCoordinate, getDistanceTime, getAutoCompleteSuggestions } from '../services/maps.service';
+import { getAddressCoordinate, getDistanceTime, getAutoCompleteSuggestions } from '../services/maps.service.js';
 import { validationResult } from 'express-validator';
 
 

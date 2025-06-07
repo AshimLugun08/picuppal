@@ -1,8 +1,8 @@
 import { Router } from 'express';
 const router = Router();
 import { body, query } from 'express-validator';
-import { createRide, getFare, confirmRide, startRide, endRide } from '../controllers/ride.controller';
-import { authUser, authCaption } from '../middlewares/auth.middleware';
+import { createRide, getFare, confirmRide, startRide, endRide } from '../controllers/ride.controller.js';
+import { authUser, authCaption } from '../middlewares/auth.middleware.js';
 
 router.post('/create',authUser,
     // body('userId').isString().isLength({min:24,max:24}).withMessage('Invalid user ID'),

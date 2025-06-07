@@ -1,7 +1,7 @@
 import { Router } from 'express';
 const router = Router();
-import { authUser } from '../middlewares/auth.middleware';
-import { getCoordinate, getDistanceTime, getAutoCompleteSuggestions } from '../controllers/map.controller';
+import { authUser } from '../middlewares/auth.middleware.js';
+import { getCoordinate, getDistanceTime, getAutoCompleteSuggestions } from '../controllers/map.controller.js';
 import { query } from 'express-validator';
 // const  = require('../controllers/map.controller');
 

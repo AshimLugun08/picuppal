@@ -1,7 +1,7 @@
 import { verify } from 'jsonwebtoken';
-import userModel from '../model/user.model';
-import blackListTokenModel from '../model/blacklistToken.model';
-import captionModel from '../model/caption.model';
+import userModel from '../model/user.model.js';
+import blackListTokenModel from '../model/blacklistToken.model.js';
+import captionModel from '../model/caption.model.js';
 
 const authUser = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];

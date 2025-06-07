@@ -1,9 +1,9 @@
 // const {  } = require('jsonwebtoken');
-import userModel from '../model/user.model';
-import { createUser } from '../services/user.services';
+import userModel from '../model/user.model.js';
+import { createUser } from '../services/user.services.js';
 import { validationResult } from 'express-validator';
 // const user = require('../model/user.model');
-import blackListTokenSchema from '../model/blacklistToken.model';
+import blackListTokenSchema from '../model/blacklistToken.model.js';
 
 
 export async function registerUser(req, res) {

@@ -1,5 +1,5 @@
 import { get } from 'axios';
-import { find } from '../model/caption.model';
+import { find } from '../model/caption.model.js';
 
 
 export async function getAddressCoordinate(address){

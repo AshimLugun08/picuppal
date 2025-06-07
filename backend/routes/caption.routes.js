@@ -1,8 +1,8 @@
 import { Router } from 'express';
 const router =Router();
 import { body } from 'express-validator';
-import { registerCaption, loginCaptain, getCaptionProfile, logoutCaption } from '../controllers/caption.controller';
-import { authCaption } from '../middlewares/auth.middleware';
+import { registerCaption, loginCaptain, getCaptionProfile, logoutCaption } from '../controllers/caption.controller.js';
+import { authCaption } from '../middlewares/auth.middleware.js';
 
 
 router.post('/register',[

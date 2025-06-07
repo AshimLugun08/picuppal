@@ -1,6 +1,6 @@
 import socketIo from 'socket.io';
-import { findByIdAndUpdate } from './model/user.model'; // Assuming you have a user model
-import { findByIdAndUpdate as _findByIdAndUpdate } from './model/caption.model'; // Assuming you have a ride model
+import { findByIdAndUpdate } from './model/user.model.js'; // Assuming you have a user model
+import { findByIdAndUpdate as _findByIdAndUpdate } from './model/caption.model.js'; // Assuming you have a ride model
 
 
 let io;
