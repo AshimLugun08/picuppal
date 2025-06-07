@@ -1,6 +1,6 @@
 import socketIo from 'socket.io';
-import { findByIdAndUpdate } from './model/user.model.js'; // Assuming you have a user model
-import { findByIdAndUpdate as _findByIdAndUpdate } from './model/caption.model.js'; // Assuming you have a ride model
+import userModal from './model/user.model.js'; // Assuming you have a user model
+import captainModel from './model/caption.model.js';
 
 
 let io;
@@ -23,9 +23,9 @@ function initializeSocket(server) {
             
 console.log(`User joined: ${userId}, Type: ${userType}`);
             if (userType === 'user') {
-                await findByIdAndUpdate(userId, { socketId: socket.id });
+                await userModal.findByIdAndUpdate(userId, { socketId: socket.id });
             } else if (userType === 'captain') {
-                await _findByIdAndUpdate(userId, { socketId: socket.id });
+                await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
             }
         });
 
@@ -37,7 +37,7 @@ console.log(`User joined: ${userId}, Type: ${userType}`);
                 return socket.emit('error', { message: 'Invalid location data' });
             }
 
-            await _findByIdAndUpdate(userId, {
+            await  captainModel.findByIdAndUpdate(userId, {
                 location: {
                     ltd: location.ltd,
                     lng: location.lng
