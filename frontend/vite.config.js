@@ -10,4 +10,11 @@ export default defineConfig({
       plugins: [autoprefixer()],
     },
   },
+  build: {
+    outDir: 'dist', // Ensure this matches Render’s publish directory
+  },
+  preview: {
+    host: '0.0.0.0', // Bind to all interfaces
+    port: parseInt(process.env.PORT, 10) || 3000, // Use Render’s PORT or fallback to 3000
+  },
 });
