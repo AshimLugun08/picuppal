@@ -1,6 +1,6 @@
-const socketIo = require('socket.io');
-const userModel = require('./model/user.model'); // Assuming you have a user model
-const captainModel = require('./model/caption.model'); // Assuming you have a ride model
+import socketIo from 'socket.io';
+import { findByIdAndUpdate } from './model/user.model'; // Assuming you have a user model
+import { findByIdAndUpdate as _findByIdAndUpdate } from './model/caption.model'; // Assuming you have a ride model
 
 
 let io;
@@ -23,9 +23,9 @@ function initializeSocket(server) {
             
 console.log(`User joined: ${userId}, Type: ${userType}`);
             if (userType === 'user') {
-                await userModel.findByIdAndUpdate(userId, { socketId: socket.id });
+                await findByIdAndUpdate(userId, { socketId: socket.id });
             } else if (userType === 'captain') {
-                await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
+                await _findByIdAndUpdate(userId, { socketId: socket.id });
             }
         });
 
@@ -37,7 +37,7 @@ console.log(`User joined: ${userId}, Type: ${userType}`);
                 return socket.emit('error', { message: 'Invalid location data' });
             }
 
-            await captainModel.findByIdAndUpdate(userId, {
+            await _findByIdAndUpdate(userId, {
                 location: {
                     ltd: location.ltd,
                     lng: location.lng
@@ -62,4 +62,4 @@ console.log(messageObject);
     }
 }
 
-module.exports = { initializeSocket, sendMessageToSocketId };
+export default { initializeSocket, sendMessageToSocketId };

@@ -1,8 +1,8 @@
-const express = require('express');
-const router =express.Router();
-const { body } = require('express-validator');
-const captionController = require('../controllers/caption.controller');
-const authMiddleware = require('../middlewares/auth.middleware');
+import { Router } from 'express';
+const router =Router();
+import { body } from 'express-validator';
+import { registerCaption, loginCaptain, getCaptionProfile, logoutCaption } from '../controllers/caption.controller';
+import { authCaption } from '../middlewares/auth.middleware';
 
 
 router.post('/register',[
@@ -21,20 +21,20 @@ router.post('/register',[
     body('vehicle.vehicleType')
         .isIn(['car', 'motorcycle', 'auto']).withMessage('Vehicle type must be car, bike, or truck'),
 ], 
-captionController.registerCaption);
+    registerCaption);
 
 router.post('/login', [
     body('email').isEmail().withMessage('Invalid email'),
     body('password')
         .isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
-],captionController.loginCaptain);
+],loginCaptain);
 
 
 
 
-router.get('/profile', authMiddleware.authCaption, captionController.getCaptionProfile);
+router.get('/profile', authCaption, getCaptionProfile);
 
-router.get('/logout', authMiddleware.authCaption, captionController.logoutCaption);
+router.get('/logout', authCaption, logoutCaption);
 
 
-module.exports = router;
+export default router;

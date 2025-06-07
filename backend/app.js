@@ -1,17 +1,17 @@
-const express = require('express');
+import express, { json, urlencoded } from 'express';
 require('dotenv').config();
 const app = express();
-const cookieParser = require('cookie-parser');
-const cors = require('cors');
-const userRoutes = require('./routes/user.routes');
-const captionRoutes = require('./routes/caption.routes');
-const connectDB = require('./db/db');
-const mapRoutes = require('./routes/map.routes');
-const rideRoutes = require('./routes/ride.routes'); // Assuming you have a ride.routes.js file
+import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import userRoutes from './routes/user.routes';
+import captionRoutes from './routes/caption.routes';
+import connectDB from './db/db';
+import mapRoutes from './routes/map.routes';
+import rideRoutes from './routes/ride.routes'; // Assuming you have a ride.routes.js file
   connectDB();
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(json());
+app.use(urlencoded({ extended: true })); 
 app.use(cookieParser());   
 
 app.get('/', (req, res) => {
@@ -27,4 +27,4 @@ app.use('/rides',rideRoutes); // Registering ride routes);
 
 
 
-module.exports = app;   
+export default app;   

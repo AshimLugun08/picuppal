@@ -1,8 +1,8 @@
-const mapService = require('../services/maps.service');
-const {validationResult } = require('express-validator');
+import { getAddressCoordinate, getDistanceTime, getAutoCompleteSuggestions } from '../services/maps.service';
+import { validationResult } from 'express-validator';
 
 
-module.exports.getCoordinate = async (req, res) => {
+export async function getCoordinate(req, res) {
     const errors = validationResult(req);       
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -15,14 +15,14 @@ module.exports.getCoordinate = async (req, res) => {
     }
 
     try {
-        const coordinates = await mapService.getAddressCoordinate(address);
+        const coordinates = await getAddressCoordinate(address);
          res.status(200).json(coordinates);
     } catch (error) {
         console.error('Error fetching coordinates:', error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
-module.exports.getDistanceTime= async (req, res ,next) => {
+export async function getDistanceTime(req, res ,next) {
     try{
 
         const errors = validationResult(req);
@@ -36,14 +36,14 @@ module.exports.getDistanceTime= async (req, res ,next) => {
             return res.status(400).json({ message: 'Origin and destination are required' });
         }
 
-        const distanceTime = await mapService.getDistanceTime(origin, destination);
+        const distanceTime = await getDistanceTime(origin, destination);
         res.status(200).json(distanceTime);
     } catch (error) {
         console.error('Error fetching distance and time:', error);
         return res.status(500).json({ message: 'Internal Server Error' });
     }}
 
-module.exports.getAutoCompleteSuggestions = async (req, res) => {
+export async function getAutoCompleteSuggestions(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -56,7 +56,7 @@ module.exports.getAutoCompleteSuggestions = async (req, res) => {
     }
 
     try {
-        const suggestions = await mapService.getAutoCompleteSuggestions(input);
+        const suggestions = await getAutoCompleteSuggestions(input);
         res.status(200).json(suggestions);
     } catch (error) {
         console.error('Error fetching suggestions:', error);

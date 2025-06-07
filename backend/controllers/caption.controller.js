@@ -1,11 +1,11 @@
-const captainModel = require('../model/caption.model');
-const captainService = require('../services/caption.service');
-const blackListTokenModel = require('../model/blacklistToken.model');
-const { validationResult } = require('express-validator');
+import captainModel from '../model/caption.model';
+import { createCaption } from '../services/caption.service';
+import blackListTokenModel from '../model/blacklistToken.model';
+import { validationResult } from 'express-validator';
 // const captain = require('../model/caption.model');  
 
 
-module.exports.registerCaption = async (req, res, next) => {
+export async function registerCaption(req, res, next) {
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -23,7 +23,7 @@ module.exports.registerCaption = async (req, res, next) => {
 
     const hashedPassword = await captainModel.hashPassword(password);
 
-    const captain = await captainService.createCaption({
+    const captain = await createCaption({
         firstname: fullname.firstname,
         lastname: fullname.lastname,
         email,
@@ -42,7 +42,7 @@ module.exports.registerCaption = async (req, res, next) => {
 
 
 
-module.exports.loginCaptain = async (req, res) => {
+export async function loginCaptain(req, res) {
   try {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -77,13 +77,13 @@ const captain = await captainModel.findOne({ email }).select('+password');
     console.error('Login error:', err);
     res.status(500).json({ message: 'Internal server error' });
   }
-};
+}
 
-module.exports.getCaptionProfile = async (req, res, next) => {
+export async function getCaptionProfile(req, res, next) {
     res.status(200).json({ captain: req.captain });
 }
 
-module.exports.logoutCaption = async (req, res, next) => {
+export async function logoutCaption(req, res, next) {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
 
     await blackListTokenModel.create({ token });

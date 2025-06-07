@@ -1,7 +1,7 @@
-const jwt = require('jsonwebtoken');
-const userModel = require('../model/user.model');
-const blackListTokenModel = require('../model/blacklistToken.model');
-const captionModel = require('../model/caption.model');
+import { verify } from 'jsonwebtoken';
+import userModel from '../model/user.model';
+import blackListTokenModel from '../model/blacklistToken.model';
+import captionModel from '../model/caption.model';
 
 const authUser = async (req, res, next) => {
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
@@ -13,7 +13,7 @@ const authUser = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = verify(token, process.env.JWT_SECRET);
         const user = await userModel.findById(decoded._id);
         req.user = user;
         next();
@@ -33,7 +33,7 @@ const authCaption = async (req, res, next) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = verify(token, process.env.JWT_SECRET);
         const captain = await captionModel.findById(decoded._id);
         req.captain = captain;
         next();
@@ -43,7 +43,7 @@ const authCaption = async (req, res, next) => {
     }
 };
 
-module.exports = {
+export default {
     authUser,
     authCaption
 };

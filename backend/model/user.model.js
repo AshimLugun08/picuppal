@@ -1,10 +1,10 @@
-const e = require('express');
-const mongoose = require('mongoose');
+import express from 'express';
+import { Schema, model } from 'mongoose';
 // const { emit } = require('../app');
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+import { compare, hash } from 'bcrypt';
+import { sign } from 'jsonwebtoken';
 
-const userSchema = new mongoose.Schema({
+const userSchema = new Schema({
     fullname:{
      firstname:  { type: String,
         required: true,
@@ -36,17 +36,17 @@ const userSchema = new mongoose.Schema({
 })
 
 userSchema.methods.genterateAuthToken = function() {
-    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET , {expiresIn: '24h'});
+    const token = sign({ _id: this._id }, process.env.JWT_SECRET , {expiresIn: '24h'});
     return token;
 }
 userSchema.methods.comparePassword = async function(password) {
-    return await bcrypt.compare(password, this.password);
+    return await compare(password, this.password);
 }
 
 userSchema.statics.hashPassword = async function(password) {
-    return await bcrypt.hash(password, 10);
+    return await hash(password, 10);
 }
 
 
-const userModel = mongoose.model('user', userSchema);
-module.exports = userModel;
+const userModel = model('user', userSchema);
+export default userModel;

@@ -1,10 +1,10 @@
-const rideService = require('../services/ride.service');
-const { validationResult } = require('express-validator');
-const mapService =require('../services/maps.service')
-const {sendMessageToSocketId}=require('../socket')
-const rideModal=require('../model/ride.modal')
+import { createRide, getFare, confirmRide, startRide, endRide } from '../services/ride.service';
+import { validationResult } from 'express-validator';
+import { getAddressCoordinate, getCaptiansInTheRadius } from '../services/maps.service';
+import { sendMessageToSocketId } from '../socket';
+import { findOne } from '../model/ride.modal';
 
-module.exports.createRide = async (req, res) => {
+export async function createRide(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -13,7 +13,7 @@ module.exports.createRide = async (req, res) => {
     const { userId, pickup, destination, vehicleType } = req.body;
     try {
         // Create the ride
-        const ride = await rideService.createRide({
+        const ride = await createRide({
            user: req.user._id,
             pickup,
             destination,
@@ -22,11 +22,11 @@ module.exports.createRide = async (req, res) => {
          
 
         // Fetch coordinates first
-        const pickupCoordinates = await mapService.getAddressCoordinate(pickup);
+        const pickupCoordinates = await getAddressCoordinate(pickup);
         console.log('Pickup Coordinates:', pickupCoordinates);
 
         // Then fetch captains using the coordinates
-        const captianInRadius = await mapService.getCaptiansInTheRadius(
+        const captianInRadius = await getCaptiansInTheRadius(
             pickupCoordinates.lat, // Assuming 'lat' is the correct property
             pickupCoordinates.lng,
             2
@@ -37,7 +37,7 @@ module.exports.createRide = async (req, res) => {
 
         ride.otp=""
         console.log('Captains in Radius:', captianInRadius);
-      const rideWithUser = await rideModal.findOne({ _id: ride._id }).populate('user');
+      const rideWithUser = await findOne({ _id: ride._id }).populate('user');
 
 
       (captianInRadius.map( captain=>{
@@ -54,9 +54,9 @@ sendMessageToSocketId(captain.socketId ,{
     } catch (error) {
         return res.status(500).json({ error: error.message });
     }
-};
+}
 
-module.exports.getFare = async (req, res) => {
+export async function getFare(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -65,7 +65,7 @@ module.exports.getFare = async (req, res) => {
     const { pickup, destination } = req.query;
 
     try {
-        const fare = await rideService.getFare(pickup, destination);
+        const fare = await getFare(pickup, destination);
         return res.status(200).json(fare);
     } catch (err) {
         return res.status(500).json({ message: err.message });
@@ -73,7 +73,7 @@ module.exports.getFare = async (req, res) => {
 }
 
 
-module.exports.confirmRide = async (req, res) => {
+export async function confirmRide(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -82,7 +82,7 @@ module.exports.confirmRide = async (req, res) => {
     const { rideId } = req.body;
 
     try {
-        const ride = await rideService.confirmRide({ rideId, captain: req.captain });
+        const ride = await confirmRide({ rideId, captain: req.captain });
 
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-confirmed',
@@ -97,7 +97,7 @@ module.exports.confirmRide = async (req, res) => {
     }
 }
 
-module.exports.startRide = async (req, res) => {
+export async function startRide(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -106,7 +106,7 @@ module.exports.startRide = async (req, res) => {
     const { rideId, otp } = req.query;
 
     try {
-        const ride = await rideService.startRide({ rideId, otp, captain: req.captain });
+        const ride = await startRide({ rideId, otp, captain: req.captain });
 
         console.log(ride);
 
@@ -121,7 +121,7 @@ module.exports.startRide = async (req, res) => {
     }
 }
 
-module.exports.endRide = async (req, res) => {
+export async function endRide(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -130,7 +130,7 @@ module.exports.endRide = async (req, res) => {
     const { rideId } = req.body;
 
     try {
-        const ride = await rideService.endRide({ rideId, captain: req.captain });
+        const ride = await endRide({ rideId, captain: req.captain });
 
         sendMessageToSocketId(ride.user.socketId, {
             event: 'ride-ended',

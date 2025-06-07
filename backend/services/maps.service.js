@@ -1,12 +1,12 @@
-const axios = require('axios');
-const captainModel = require('../model/caption.model');
+import { get } from 'axios';
+import { find } from '../model/caption.model';
 
 
-module.exports.getAddressCoordinate= async(address) =>{
+export async function getAddressCoordinate(address){
     const apikey = process.env.GOOGLE_MAPS_API;
     const url = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${apikey}`;
     try {
-        const response = await axios.get(url);
+        const response = await get(url);
         if (response.data.status === 'OK') {
             const location = response.data.results[0].geometry.location;
             return {
@@ -23,14 +23,14 @@ module.exports.getAddressCoordinate= async(address) =>{
 
 }
 
-module.exports.getDistanceTime =async (origin, destination) => {
+export async function getDistanceTime(origin, destination) {
     if (!origin || !destination) {
         throw new Error('Origin and destination are required');
     }
     const apikey = process.env.GOOGLE_MAPS_API;
     const url = `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${encodeURIComponent(origin)}&destinations=${encodeURIComponent(destination)}&key=${apikey}`;
     try {
-        const response = await axios.get(url);
+        const response = await get(url);
         if (response.data.status === 'OK') {
            if (response.data.rows[0].elements[0].status ==='ZERO_RESULTS') {
                 throw new Error('No route found');
@@ -44,14 +44,14 @@ module.exports.getDistanceTime =async (origin, destination) => {
         throw error;
     }}
 
-    module.exports.getAutoCompleteSuggestions=async (input) => {
+    export async function     getAutoCompleteSuggestions(input) {
         if (!input) {
             throw new Error('query is required');
         }
         apikey = process.env.GOOGLE_MAPS_API;
         const url = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${apikey}`;
         try {
-            const response = await axios.get(url);
+            const response = await get(url);
             if (response.data.status === 'OK') {
                 return response.data.predictions;
             } else {
@@ -64,8 +64,8 @@ module.exports.getDistanceTime =async (origin, destination) => {
     }
 
 
-    module.exports.getCaptiansInTheRadius= async (ltd, lng, radius) => {
-        const captains=await captainModel.find({
+    export async function     getCaptiansInTheRadius(ltd, lng, radius) {
+        const captains=await find({
             location:{
                 $geoWithin:{
                     $centerSphere:[[ltd,lng],radius/6371]

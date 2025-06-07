@@ -1,12 +1,12 @@
 // const {  } = require('jsonwebtoken');
-const userModel = require('../model/user.model');
-const userService = require('../services/user.services');
-const {validationResult} = require('express-validator');
+import userModel from '../model/user.model';
+import { createUser } from '../services/user.services';
+import { validationResult } from 'express-validator';
 // const user = require('../model/user.model');
-const blackListTokenSchema = require('../model/blacklistToken.model');
+import blackListTokenSchema from '../model/blacklistToken.model';
 
 
-module.exports.registerUser = async (req, res) => {
+export async function registerUser(req, res) {
     const errors =validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -21,7 +21,7 @@ module.exports.registerUser = async (req, res) => {
 
     const hashPassword = await userModel.hashPassword(password);
 
-    const user = await userService.createUser({
+    const user = await createUser({
         firstname:fullname.firstname,
         lastname: fullname.lastname,
         email,
@@ -34,7 +34,7 @@ module.exports.registerUser = async (req, res) => {
 }
 
 
-module.exports.loginUser = async (req, res) => {
+export async function loginUser(req, res) {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({ errors: errors.array() });
@@ -57,7 +57,7 @@ module.exports.loginUser = async (req, res) => {
   
 }
 
-module.exports.getUserProfile = async (req, res) => {
+export async function getUserProfile(req, res) {
     const userId = req.user._id; // Assuming you have middleware to set req.user
     const user = await userModel.findById(userId).select('-password');
     if (!user) {
@@ -66,7 +66,7 @@ module.exports.getUserProfile = async (req, res) => {
     res.status(200).json(user);
 }
 
-module.exports.logoutUser = async (req, res) => {
+export async function logoutUser(req, res) {
     res.clearCookie('token'); // Clear the cookie
     const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
     await blackListTokenSchema.create({ token }); // Add token to blacklist
