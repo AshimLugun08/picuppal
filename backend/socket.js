@@ -1,35 +1,31 @@
 import { Server as socketIo } from 'socket.io';
 
-import userModal from './model/user.model.js'; // Assuming you have a user model
-import captainModel from './model/caption.model.js';
-
+import userModal from './model/user.model.js';      // Your user model
+import captainModel from './model/caption.model.js'; // Your captain model (typo? caption vs captain?)
 
 let io;
 
 function initializeSocket(server) {
-    io = socketIo(server, {
+    io = new socketIo(server, {
         cors: {
             origin: '*',
-            methods: [ 'GET', 'POST' ]
+            methods: ['GET', 'POST']
         }
     });
 
     io.on('connection', (socket) => {
         console.log(`Client connected: ${socket.id}`);
 
-
-        socket.on('join', async (data) => { 
-          console.log('User joined:  fron join event');
+        socket.on('join', async (data) => {
             const { userId, userType } = data;
-            
-console.log(`User joined: ${userId}, Type: ${userType}`);
+            console.log(`User joined: ${userId}, Type: ${userType}`);
+
             if (userType === 'user') {
                 await userModal.findByIdAndUpdate(userId, { socketId: socket.id });
             } else if (userType === 'captain') {
                 await captainModel.findByIdAndUpdate(userId, { socketId: socket.id });
             }
         });
-
 
         socket.on('update-location-captain', async (data) => {
             const { userId, location } = data;
@@ -38,10 +34,10 @@ console.log(`User joined: ${userId}, Type: ${userType}`);
                 return socket.emit('error', { message: 'Invalid location data' });
             }
 
-            await  captainModel.findByIdAndUpdate(userId, {
+            await captainModel.findByIdAndUpdate(userId, {
                 location: {
                     ltd: location.ltd,
-                    lng: location.lng
+                    lng: location.lng,
                 }
             });
         });
@@ -53,14 +49,12 @@ console.log(`User joined: ${userId}, Type: ${userType}`);
 }
 
 const sendMessageToSocketId = (socketId, messageObject) => {
-
-console.log(messageObject);
-
+    console.log(messageObject);
     if (io) {
         io.to(socketId).emit(messageObject.event, messageObject.data);
     } else {
         console.log('Socket.io not initialized.');
     }
-}
+};
 
-export  { initializeSocket, sendMessageToSocketId };
+export { initializeSocket, sendMessageToSocketId };
