@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { compare, hash } from 'bcrypt';
-import { sign } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken'; // ✅ import full module
+const { sign } = jwt;
 
 const captainSchema = new Schema({
     fullname:{
