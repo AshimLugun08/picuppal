@@ -11,10 +11,11 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: 'dist', // Ensure this matches Render’s publish directory
+    outDir: 'dist',
   },
   preview: {
-    host: '0.0.0.0', // Bind to all interfaces
-    port: parseInt(process.env.PORT, 10) || 3000, // Use Render’s PORT or fallback to 3000
+    host: '0.0.0.0',
+    port: parseInt(process.env.PORT, 10) || 3000,
+    allowedHosts: ['picuppal08.onrender.com'], // Allow Render domain
   },
 });
